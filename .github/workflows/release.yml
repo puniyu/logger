@@ -53,6 +53,8 @@ jobs:
 
       - name: 设置 Rust 缓存
         uses: swatinem/rust-cache@v2
+        with:
+          prefix-key: 'puniyu-logger'
 
       - name: 单元测试
         run: cargo test

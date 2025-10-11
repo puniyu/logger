@@ -83,7 +83,6 @@ where
     fn record_str(&mut self, field: &Field, value: &str) {
         if field.name() == "message" {
             if self.strip_ansi {
-                // 移除 ANSI 转义序列
                 let stripped = strip_ansi_escapes::strip(value);
                 let clean_value = String::from_utf8_lossy(&stripped);
                 write!(self.writer, "{}", clean_value).unwrap();
