@@ -8,7 +8,9 @@
       "rangeStrategy": "auto",
       "schedule": ["at any time"],
       "labels": ["dependencies"],
-      "automerge": true
+      "platformAutomerge": true,
+      "automerge": true,
+      "automergeType": "pr"
     }
   ]
 }
