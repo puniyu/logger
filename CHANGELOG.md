@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.6.0](https://github.com/Puniyu/logger/compare/v0.5.6...v0.6.0) (2025-10-11)
+
+
+### ✨ 新功能
+
+* **tracing:** 添加环境过滤功能支持 ([3f8114d](https://github.com/Puniyu/logger/commit/3f8114d39bdb961410a67b8f02f5ed6d272a9334))
+
+
+### 🔧 其他更新
+
+* **ci:** 更新发布工作流配置 ([4403265](https://github.com/Puniyu/logger/commit/44032654b70f9ca7b9361598943364870494ddd7))
+* **deps:** update actions/checkout action to v5 ([18e496d](https://github.com/Puniyu/logger/commit/18e496dafdda0f332950fd0bf7e54006e24e19d8))
+* **deps:** update rust crate owo-colors to v4.2.3 ([36dc794](https://github.com/Puniyu/logger/commit/36dc7946bd2127ec189add97854004457d9a5293))
+* **deps:** 更新 renovate 配置以优化自动化合并策略 ([66ec42f](https://github.com/Puniyu/logger/commit/66ec42f9dc9fafbeea912d496a1273df84779e93))
+* **deps:** 添加 renovate 配置文件 ([9160327](https://github.com/Puniyu/logger/commit/916032775cd7a190c14a92c438662864c51e1638))
+
 ## [0.5.6](https://github.com/Puniyu/logger/compare/v0.5.5...v0.5.6) (2025-09-24)
 
 
