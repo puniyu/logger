@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.1](https://github.com/Puniyu/logger/compare/v0.6.0...v0.6.1) (2025-10-12)
+
+
+### 🔧 其他更新
+
+* **deps:** 更新依赖并移除未使用包 ([2a29d12](https://github.com/Puniyu/logger/commit/2a29d12f3a26fbdb53d7d4c5ecada58a7d80aea5))
+* **release:** 更新发布工作流配置 ([f819ba4](https://github.com/Puniyu/logger/commit/f819ba44b421931b504b4409e700260efabaf9ab))
+
 ## [0.6.0](https://github.com/Puniyu/logger/compare/v0.5.6...v0.6.0) (2025-10-11)
 
 
