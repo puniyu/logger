@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.2](https://github.com/puniyu/logger/compare/v0.6.1...v0.6.2) (2025-11-18)
+
+
+### 🔧 其他更新
+
+* **deps:** update rust crate convert_case to 0.9.0 ([#31](https://github.com/puniyu/logger/issues/31)) ([ccaf06a](https://github.com/puniyu/logger/commit/ccaf06ace5e2e37f958929362ddd8e1d132d5b28))
+* **deps:** update rust crate tracing-shared to 0.2.0 ([#29](https://github.com/puniyu/logger/issues/29)) ([bd51c49](https://github.com/puniyu/logger/commit/bd51c49b9833ae7b7cfbd81a33cd7456d66ce574))
+
+
+### ♻️ 代码重构
+
+* **logger:** 重构日志记录器实现 ([45ee89c](https://github.com/puniyu/logger/commit/45ee89cacd28155f2b9f64ad58d91f1289813d84))
+
 ## [0.6.1](https://github.com/Puniyu/logger/compare/v0.6.0...v0.6.1) (2025-10-12)
 
 
