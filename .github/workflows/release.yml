@@ -71,11 +71,11 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
-      - name: 设置 Rust 工具链
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: 设置 Rust 缓存
-        uses: swatinem/rust-cache@v2
+      - name: 设置 rust
+        uses: puniyu/setup-rust@main
+        with:
+          save-cache: true
+          prefix-key: 'puniyu-logger'
 
       - name: 发布
         run: |
