@@ -1,7 +1,11 @@
 use chrono_tz::Asia::Shanghai;
+use convert_case::{Case, Casing};
 use owo_colors::OwoColorize;
-use std::fmt;
-use tracing::{field::{Field, Visit}, Subscriber};
+use std::{fmt, str::FromStr, sync::Once};
+use tracing::{
+    Subscriber,
+    field::{Field, Visit},
+};
 use tracing_appender::rolling::{RollingFileAppender, Rotation};
 use tracing_subscriber::{
     Layer,
@@ -10,7 +14,8 @@ use tracing_subscriber::{
     layer::SubscriberExt,
     registry::LookupSpan,
 };
-use convert_case::{Case, Casing};
+
+static INIT: Once = Once::new();
 
 pub struct LoggerOptions {
     /// 日志等级
@@ -25,9 +30,8 @@ pub struct LoggerOptions {
     pub retention_days: Option<u8>,
 }
 
-impl LoggerOptions {
-    /// 创建新的日志配置选项
-    pub fn new() -> Self {
+impl Default for LoggerOptions {
+    fn default() -> Self {
         Self {
             level: "info".to_string(),
             enable_file_logging: false,
@@ -36,6 +40,14 @@ impl LoggerOptions {
             retention_days: None,
         }
     }
+}
+
+impl LoggerOptions {
+    /// 创建默认配置
+    pub fn new() -> Self {
+        Self::default()
+    }
+
     /// 设置日志等级
     pub fn with_level(mut self, level: &str) -> Self {
         self.level = level.to_string();
@@ -54,8 +66,8 @@ impl LoggerOptions {
     }
 
     /// 设置日志文件保存目录
-    pub fn with_log_directory(mut self, directory: String) -> Self {
-        self.log_directory = Some(directory);
+    pub fn with_log_directory(mut self, directory: impl Into<String>) -> Self {
+        self.log_directory = Some(directory.into());
         self
     }
     /// 设置日志文件保留天数
@@ -67,12 +79,11 @@ impl LoggerOptions {
 
 struct MessageVisitor<'a, W> {
     writer: &'a mut W,
-    strip_ansi: bool,
 }
 
 impl<'a, W> MessageVisitor<'a, W> {
-    fn new(writer: &'a mut W, strip_ansi: bool) -> Self {
-        Self { writer, strip_ansi }
+    fn new(writer: &'a mut W) -> Self {
+        Self { writer }
     }
 }
 
@@ -82,26 +93,13 @@ where
 {
     fn record_str(&mut self, field: &Field, value: &str) {
         if field.name() == "message" {
-            if self.strip_ansi {
-                let stripped = strip_ansi_escapes::strip(value);
-                let clean_value = String::from_utf8_lossy(&stripped);
-                write!(self.writer, "{}", clean_value).unwrap();
-            } else {
-                write!(self.writer, "{}", value).unwrap();
-            }
+            let _ = write!(self.writer, "{}", value);
         }
     }
 
     fn record_debug(&mut self, field: &Field, value: &dyn fmt::Debug) {
         if field.name() == "message" {
-            if self.strip_ansi {
-                let debug_str = format!("{:?}", value);
-                let stripped = strip_ansi_escapes::strip(debug_str);
-                let clean_value = String::from_utf8_lossy(&stripped);
-                write!(self.writer, "{}", clean_value).unwrap();
-            } else {
-                write!(self.writer, "{:?}", value).unwrap();
-            }
+            let _ = write!(self.writer, "{:?}", value);
         }
     }
 }
@@ -122,34 +120,30 @@ where
         mut writer: tracing_subscriber::fmt::format::Writer<'_>,
         event: &tracing::Event<'_>,
     ) -> fmt::Result {
-        let prefix = if self.color {
-            format!("[{}]", self.prefix.magenta())
-        } else {
-            format!("[{}]", self.prefix)
-        };
-        write!(writer, "{} ", prefix)?;
-
-        let local_time = chrono::Local::now();
-        let shanghai_time = local_time.with_timezone(&Shanghai);
-        let formatted_time = shanghai_time.format("%H:%M:%S%.3f");
-        write!(writer, "[{}] ", formatted_time)?;
-
-        let logger_level = event.metadata().level();
         if self.color {
-            let colored_level = match *logger_level {
-                tracing::Level::ERROR => logger_level.red().to_string(),
-                tracing::Level::WARN => logger_level.yellow().to_string(),
-                tracing::Level::INFO => logger_level.green().to_string(),
-                tracing::Level::DEBUG => logger_level.blue().to_string(),
-                tracing::Level::TRACE => logger_level.magenta().to_string(),
-            };
-            write!(writer, "[{: <17}] ", colored_level)?;
+            write!(writer, "[{}] ", self.prefix.magenta())?;
         } else {
-            write!(writer, "[{: <7}] ", logger_level)?;
+            write!(writer, "[{}] ", &self.prefix)?;
         }
 
-        let mut writer_ref = writer.by_ref();
-        let mut visitor = MessageVisitor::new(&mut writer_ref, !self.color);
+        let shanghai_time = chrono::Local::now().with_timezone(&Shanghai);
+        write!(writer, "[{}] ", shanghai_time.format("%H:%M:%S%.3f"))?;
+
+        let level = event.metadata().level();
+        if self.color {
+            use tracing::Level;
+            match *level {
+                Level::ERROR => write!(writer, "[{: <7}] ", level.red())?,
+                Level::WARN => write!(writer, "[{: <7}] ", level.yellow())?,
+                Level::INFO => write!(writer, "[{: <7}] ", level.green())?,
+                Level::DEBUG => write!(writer, "[{: <7}] ", level.blue())?,
+                Level::TRACE => write!(writer, "[{: <7}] ", level.magenta())?,
+            }
+        } else {
+            write!(writer, "[{: <7}] ", level)?;
+        }
+
+        let mut visitor = MessageVisitor::new(&mut writer);
         event.record(&mut visitor);
 
         writeln!(writer)
@@ -157,51 +151,71 @@ where
 }
 
 pub fn init(options: Option<LoggerOptions>) {
+    INIT.call_once(|| {
+        let options = options.unwrap_or_default();
 
-    let options = options.unwrap_or_else(|| LoggerOptions::new());
+        let logger_level = options
+            .level
+            .parse::<LogLevel>()
+            .unwrap_or(LogLevel(LevelFilter::INFO))
+            .0;
+        let prefix = options.prefix.as_deref().unwrap_or("puniyu");
+        let prefix_str = prefix.to_case(Case::Pascal);
 
-    let logger_level = parse_log_level(&options.level);
-    let prefix = options.prefix.as_deref().unwrap_or("puniyu");
-    let prefix_str = prefix.to_case(Case::Pascal);
-
-    let console_subscriber = tracing_subscriber::fmt::layer()
-        .event_format(Formatter { prefix: prefix_str.to_string(), color: true })
-        .with_filter(logger_level);
-
-    let mut layers = vec![console_subscriber.boxed()];
-
-    if options.enable_file_logging {
-        let log_dir = options.log_directory.unwrap_or_else(|| "logs".to_string());
-        let _ = std::fs::create_dir_all(&log_dir);
-        let file_appender = RollingFileAppender::builder()
-            .rotation(Rotation::DAILY)
-            .filename_prefix(prefix.to_case(Case::Lower))
-            .filename_suffix("log")
-            .max_log_files(options.retention_days.unwrap_or(7) as usize)
-            .build(&log_dir)
-            .unwrap();
-
-        let file_subscriber = tracing_subscriber::fmt::layer()
-            .event_format(Formatter { prefix: prefix_str.to_string(), color: false })
-            .with_writer(file_appender)
-            .with_ansi(false)
+        let console_subscriber = tracing_subscriber::fmt::layer()
+            .event_format(Formatter {
+                prefix: prefix_str.clone(),
+                color: true,
+            })
             .with_filter(logger_level);
 
-        layers.push(file_subscriber.boxed());
-    }
-    let subscriber = tracing_subscriber::registry().with(layers);
+        let mut layers = vec![console_subscriber.boxed()];
 
-    tracing::subscriber::set_global_default(subscriber).ok();
-    tracing_log::LogTracer::init().ok();
+        if options.enable_file_logging {
+            let log_dir = options.log_directory.unwrap_or_else(|| "logs".to_string());
+            let _ = std::fs::create_dir_all(&log_dir);
+            let file_appender = RollingFileAppender::builder()
+                .rotation(Rotation::DAILY)
+                .filename_prefix(prefix.to_case(Case::Lower))
+                .filename_suffix("log")
+                .max_log_files(options.retention_days.unwrap_or(7) as usize)
+                .build(&log_dir)
+                .expect("Failed to create file appender");
+
+            let file_subscriber = tracing_subscriber::fmt::layer()
+                .event_format(Formatter {
+                    prefix: prefix_str,
+                    color: false,
+                })
+                .with_writer(file_appender)
+                .with_ansi(false)
+                .with_filter(logger_level);
+
+            layers.push(file_subscriber.boxed());
+        }
+
+        let subscriber = tracing_subscriber::registry().with(layers);
+        tracing::subscriber::set_global_default(subscriber)
+            .expect("Failed to set global subscriber");
+        tracing_log::LogTracer::init().expect("Failed to initialize LogTracer");
+    });
 }
 
-fn parse_log_level(level: &str) -> LevelFilter {
-    match level.to_lowercase().as_str() {
-        "trace" => LevelFilter::TRACE,
-        "debug" => LevelFilter::DEBUG,
-        "info" => LevelFilter::INFO,
-        "warn" => LevelFilter::WARN,
-        "error" => LevelFilter::ERROR,
-        _ => LevelFilter::INFO,
+struct LogLevel(LevelFilter);
+
+impl FromStr for LogLevel {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let filter = match s.to_lowercase().as_str() {
+            "trace" => LevelFilter::TRACE,
+            "debug" => LevelFilter::DEBUG,
+            "info" => LevelFilter::INFO,
+            "warn" | "warning" => LevelFilter::WARN,
+            "error" => LevelFilter::ERROR,
+            "off" => LevelFilter::OFF,
+            _ => LevelFilter::INFO,
+        };
+        Ok(LogLevel(filter))
     }
 }
