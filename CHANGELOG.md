@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.6.3](https://github.com/puniyu/logger/compare/v0.6.2...v0.6.3) (2025-11-23)
+
+
+### 🔧 其他更新
+
+* **ci:** 更新 Rust 设置和缓存配置 ([f818168](https://github.com/puniyu/logger/commit/f818168749ad20bc937e8a1983455370f7446611))
+* **deps:** update actions/checkout action to v6 ([73e3a47](https://github.com/puniyu/logger/commit/73e3a471ce44680a099049bad66072f53f766214))
+* **deps:** update rust crate convert_case to 0.10.0 ([c9cdabe](https://github.com/puniyu/logger/commit/c9cdabed3699405956e8f3a1052a316fa7149725))
+
 ## [0.6.2](https://github.com/puniyu/logger/compare/v0.6.1...v0.6.2) (2025-11-18)
 
 
