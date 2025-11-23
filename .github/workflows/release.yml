@@ -54,9 +54,6 @@ jobs:
           save-cache: true
           prefix-key: 'puniyu-logger'
 
-      - name: 设置 Rust 工具链
-        uses: dtolnay/rust-toolchain@stable
-
       - name: 单元测试
         run: cargo test
 
