@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.4](https://github.com/puniyu/logger/compare/v0.6.3...v0.6.4) (2025-11-26)
+
+
+### 🔧 其他更新
+
+* **ci:** 移除重复的 Rust 工具链设置步骤 ([d0e55a4](https://github.com/puniyu/logger/commit/d0e55a46106e27a436236ca07fef001503a7f30f))
+
+
+### ♻️ 代码重构
+
+* **logger:** 移除冗余的 new 方法并支持 ANSI 转义序列清理 ([cdcd415](https://github.com/puniyu/logger/commit/cdcd41586950c7d19847ce6f06922d46aa618d9d))
+
 ## [0.6.3](https://github.com/puniyu/logger/compare/v0.6.2...v0.6.3) (2025-11-23)
 
 
