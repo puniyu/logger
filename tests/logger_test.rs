@@ -3,7 +3,7 @@ use puniyu_logger::{LoggerOptions, init as log_init};
 use tracing_log::log;
 #[test]
 fn log_with_options() {
-    let options = LoggerOptions::new()
+    let options = LoggerOptions::default()
         .with_file_logging(true)
         .with_log_directory("logs")
         .with_retention_days(7);

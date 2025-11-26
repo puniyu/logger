@@ -43,10 +43,6 @@ impl Default for LoggerOptions {
 }
 
 impl LoggerOptions {
-    /// 创建默认配置
-    pub fn new() -> Self {
-        Self::default()
-    }
 
     /// 设置日志等级
     pub fn with_level(mut self, level: &str) -> Self {
@@ -79,11 +75,12 @@ impl LoggerOptions {
 
 struct MessageVisitor<'a, W> {
     writer: &'a mut W,
+    strip_ansi: bool,
 }
 
 impl<'a, W> MessageVisitor<'a, W> {
-    fn new(writer: &'a mut W) -> Self {
-        Self { writer }
+    fn new(writer: &'a mut W, strip_ansi: bool) -> Self {
+        Self { writer, strip_ansi }
     }
 }
 
@@ -93,13 +90,32 @@ where
 {
     fn record_str(&mut self, field: &Field, value: &str) {
         if field.name() == "message" {
-            let _ = write!(self.writer, "{}", value);
+            if self.strip_ansi {
+                let cleaned_bytes = strip_ansi_escapes::strip(value);
+                if let Ok(cleaned) = String::from_utf8(cleaned_bytes) {
+                    let _ = write!(self.writer, "{}", cleaned);
+                } else {
+                    let _ = write!(self.writer, "{}", value);
+                }
+            } else {
+                let _ = write!(self.writer, "{}", value);
+            }
         }
     }
 
     fn record_debug(&mut self, field: &Field, value: &dyn fmt::Debug) {
         if field.name() == "message" {
-            let _ = write!(self.writer, "{:?}", value);
+            if self.strip_ansi {
+                let formatted = format!("{:?}", value);
+                let cleaned_bytes = strip_ansi_escapes::strip(&formatted);
+                if let Ok(cleaned) = String::from_utf8(cleaned_bytes) {
+                    let _ = write!(self.writer, "{}", cleaned);
+                } else {
+                    let _ = write!(self.writer, "{}", formatted);
+                }
+            } else {
+                let _ = write!(self.writer, "{:?}", value);
+            }
         }
     }
 }
@@ -143,7 +159,7 @@ where
             write!(writer, "[{: <7}] ", level)?;
         }
 
-        let mut visitor = MessageVisitor::new(&mut writer);
+        let mut visitor = MessageVisitor::new(&mut writer, !self.color);
         event.record(&mut visitor);
 
         writeln!(writer)
