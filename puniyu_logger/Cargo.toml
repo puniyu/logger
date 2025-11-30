@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_logger"
-version = "0.6.4"
+version = "0.1.0"
 description = "puniyu, logger核心实现"
 edition.workspace = true
 repository.workspace = true
