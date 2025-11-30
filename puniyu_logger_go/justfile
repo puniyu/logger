@@ -1,0 +1,19 @@
+set windows-shell := ["powershell.exe", "-c"]
+set shell := ["bash", "-cu"]
+
+default: build
+
+build:
+    just ../puniyu_logger_ffi/build
+    just _copy
+
+[unix]
+_copy:
+    cp ../puniyu_logger_ffi/include/puniyu_logger.h .
+    cp ../puniyu_logger_ffi/lib/libpuniyu_logger_ffi.a .
+
+[windows]
+_copy:
+    Copy-Item ../puniyu_logger_ffi/include/puniyu_logger.h .
+    Copy-Item ../puniyu_logger_ffi/lib/puniyu_logger_ffi.lib .
+

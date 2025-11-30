@@ -1,21 +1,26 @@
-[package]
-name = "puniyu_logger"
-version = "0.6.4"
-description = "奈柚核心，logger核心实现"
-edition = "2024"
-repository = "https://github.com/PuniYu/logger"
-readme = "README.md"
+[workspace]
+members = [
+    "puniyu_logger",
+    "puniyu_logger_ffi",
+]
+exclude = ["puniyu_logger_go"]
+resolver = "2"
+
+[workspace.package]
+authors = ["wuliya <3369906077@qq.com>"]
 license = "GPL-3.0-only"
+readme = "README.md"
+homepage = "https://github.com/puniyu/logger"
+repository = "https://github.com/puniyu/logger"
+edition = "2024"
 rust-version = "1.88.0"
 
-[dependencies]
-tracing = "0.1.41"
-tracing-subscriber = { version = "0.3", features = ["chrono", "fmt"] }
-chrono = "0.4.41"
-tracing-log = "0.2.0"
-tracing-appender = "0.2.3"
-chrono-tz = "0.10.4"
-owo-colors = "4.2.2"
-tracing-shared = "0.2.0"
-convert_case = "0.10.0"
-strip-ansi-escapes = "0.2.0"
+
+[profile.release]
+lto = "thin"
+incremental = false
+
+[profile.dev]
+incremental = true
+
+
