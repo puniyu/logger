@@ -1,14 +1,12 @@
 [workspace]
 members = [
-    "puniyu_logger",
-    "puniyu_logger_ffi",
+    "packages/rust"
 ]
-exclude = ["puniyu_logger_go"]
 resolver = "2"
 
 [workspace.package]
 authors = ["wuliya <3369906077@qq.com>"]
-license = "GPL-3.0-only"
+license = "MIT"
 readme = "README.md"
 homepage = "https://github.com/puniyu/logger"
 repository = "https://github.com/puniyu/logger"
