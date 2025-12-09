@@ -64,7 +64,7 @@
     }
   ],
   "packages": {
-    "puniyu_logger": {
+    "packages/rust": {
       "release-type": "rust"
     }
   },
