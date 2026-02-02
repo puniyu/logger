@@ -43,6 +43,9 @@ impl Default for LoggerOptions {
 }
 
 impl LoggerOptions {
+    pub fn new() -> Self {
+        Self::default()
+    }
 
     /// 设置日志等级
     pub fn with_level(mut self, level: &str) -> Self {
@@ -166,9 +169,9 @@ where
     }
 }
 
-pub fn init(options: Option<LoggerOptions>) {
+pub fn init(options: impl Into<Option<LoggerOptions>>) {
     INIT.call_once(|| {
-        let options = options.unwrap_or_default();
+        let options = options.into().unwrap_or_default();
 
         let logger_level = options
             .level

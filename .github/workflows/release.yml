@@ -3,13 +3,7 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'Cargo.toml'
-      - 'src/*'
   pull_request_target:
-    paths:
-      - 'Cargo.toml'
-      - 'src/*'
   workflow_dispatch:
 
 
