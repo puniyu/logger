@@ -1,6 +1,6 @@
 [package]
 name = "puniyu_logger"
-version = "0.7.0"
+version = "0.7.1"
 description = "puniyu, logger核心实现"
 authors = ["wuliya <3369906077@qq.com>"]
 license = "MIT"
