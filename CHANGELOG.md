@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.7.1](https://github.com/puniyu/logger/compare/v0.7.0...v0.7.1) (2026-04-08)
+
+
+### 🔧 其他更新
+
+* **deps:** pin puniyu/setup-rust action to 36710db ([#60](https://github.com/puniyu/logger/issues/60)) ([9e2156e](https://github.com/puniyu/logger/commit/9e2156e1fa88f3ca70a916038c25b24bd14e1905))
+* **deps:** update actions/create-github-app-token action to v2.2.2 ([#58](https://github.com/puniyu/logger/issues/58)) ([ff0805c](https://github.com/puniyu/logger/commit/ff0805c5aedf42ab0aa3203b76e5ea0b082da370))
+* **deps:** update actions/create-github-app-token action to v3 ([#59](https://github.com/puniyu/logger/issues/59)) ([399479c](https://github.com/puniyu/logger/commit/399479c813010435ab6af5d2e7291f8a4ed6bc84))
+* **deps:** update dependency rust to v1.93.1 ([#54](https://github.com/puniyu/logger/issues/54)) ([7fc7fd3](https://github.com/puniyu/logger/commit/7fc7fd338b58e1b6f184ac656870e91bcc8017a9))
+* **deps:** update dependency rust to v1.94.0 ([#56](https://github.com/puniyu/logger/issues/56)) ([38b82b7](https://github.com/puniyu/logger/commit/38b82b771e69f433cd3c90fa976ae57416a0912d))
+* **deps:** update dependency rust to v1.94.1 ([#61](https://github.com/puniyu/logger/issues/61)) ([782f48c](https://github.com/puniyu/logger/commit/782f48cdcca1c1c022eb2d77e8572f01b173f15e))
+* **deps:** update rust crates ([9f485bf](https://github.com/puniyu/logger/commit/9f485bf3383f46425c05f28411dd90c90de27430))
+
+
+### ♻️ 代码重构
+
+* 重构后端, 更换为logforth ([6fcfcf4](https://github.com/puniyu/logger/commit/6fcfcf42eb55215b084cf663c283c2c38936fa50))
+
 ## [0.7.0](https://github.com/puniyu/logger/compare/v0.6.4...v0.7.0) (2026-02-02)
 
 
