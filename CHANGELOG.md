@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.2](https://github.com/puniyu/logger/compare/v0.7.1...v0.7.2) (2026-04-08)
+
+
+### ♻️ 代码重构
+
+* **puniyu_logger:** 移除过时的时间处理依赖并调整日志库配置 ([23a048d](https://github.com/puniyu/logger/commit/23a048d58a80cc41edc86cd160561a57e331e1aa))
+
 ## [0.7.1](https://github.com/puniyu/logger/compare/v0.7.0...v0.7.1) (2026-04-08)
 
 
