@@ -46,7 +46,7 @@ jobs:
       - name: 设置 rust
         uses: puniyu/setup-rust@36710db2069c5dbcd0bc48cf725ad62ece8bff77 # main
         with:
-          save-cache: true
+          cache: true
           prefix-key: 'puniyu-logger'
 
       - name: 单元测试
@@ -66,7 +66,7 @@ jobs:
       - name: 设置 rust
         uses: puniyu/setup-rust@36710db2069c5dbcd0bc48cf725ad62ece8bff77 # main
         with:
-          save-cache: true
+          cache: true
           prefix-key: 'puniyu-logger'
 
       - name: 发布

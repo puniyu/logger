@@ -64,7 +64,7 @@
     }
   ],
   "packages": {
-    "packages/rust": {
+    ".": {
       "release-type": "rust"
     }
   },

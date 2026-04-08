@@ -1,10 +1,7 @@
-[workspace]
-members = [
-    "packages/rust"
-]
-resolver = "2"
-
-[workspace.package]
+[package]
+name = "puniyu_logger"
+version = "0.7.0"
+description = "puniyu, logger核心实现"
 authors = ["wuliya <3369906077@qq.com>"]
 license = "MIT"
 readme = "README.md"
@@ -13,12 +10,15 @@ repository = "https://github.com/puniyu/logger"
 edition = "2024"
 rust-version = "1.88.0"
 
+[dependencies]
+chrono = "0.4.41"
+chrono-tz = "0.10.4"
+convert_case = "0.11.0"
+jiff = "0.2.23"
+log = "0.4.29"
+logforth = { version = "0.29.1", features = ["starter-log"] }
+owo-colors = "4.2.2"
+strip-ansi-escapes = "0.2.0"
 
-[profile.release]
-lto = "thin"
-incremental = false
-
-[profile.dev]
-incremental = true
 
 
