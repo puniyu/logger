@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.7.3](https://github.com/puniyu/logger/compare/v0.7.2...v0.7.3) (2026-04-22)
+
+
+### 🔧 其他更新
+
+* **deps:** update actions/create-github-app-token action to v3.1.1 ([#64](https://github.com/puniyu/logger/issues/64)) ([cf5227b](https://github.com/puniyu/logger/commit/cf5227b711ae5c1de3a08a16111f82774adc364c))
+* **deps:** update dependency rust to v1.95.0 ([#68](https://github.com/puniyu/logger/issues/68)) ([cccbb10](https://github.com/puniyu/logger/commit/cccbb10d72b9ccf9f2ee6c80490ad80eeb9428b2))
+* **deps:** update googleapis/release-please-action action to v4.4.1 ([#66](https://github.com/puniyu/logger/issues/66)) ([eb35adc](https://github.com/puniyu/logger/commit/eb35adc00a16e49a70b7afcbb40d38ca4595faa1))
+* **deps:** update googleapis/release-please-action action to v5 ([#69](https://github.com/puniyu/logger/issues/69)) ([65da9d6](https://github.com/puniyu/logger/commit/65da9d6a44a4a76ebf1ad03abab4c6e48846f001))
+* **deps:** update puniyu/setup-rust digest to a6d1a3a ([#67](https://github.com/puniyu/logger/issues/67)) ([64d7b7e](https://github.com/puniyu/logger/commit/64d7b7ed578a23c572919b9a9093499f67e6c178))
+
 ## [0.7.2](https://github.com/puniyu/logger/compare/v0.7.1...v0.7.2) (2026-04-08)
 
 
