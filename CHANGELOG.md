@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.5](https://github.com/puniyu/logger/compare/v0.7.4...v0.7.5) (2026-04-27)
+
+
+### 🐛 错误修复
+
+* 修复ci ([04a3098](https://github.com/puniyu/logger/commit/04a3098852cc6942a0ae626bf9f3eefe97ca1a3c))
+
 ## [0.7.4](https://github.com/puniyu/logger/compare/v0.7.3...v0.7.4) (2026-04-27)
 
 
