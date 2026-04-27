@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.4](https://github.com/puniyu/logger/compare/v0.7.3...v0.7.4) (2026-04-27)
+
+
+### 🐛 错误修复
+
+* **ci:** 修复ci发布 ([8d1b768](https://github.com/puniyu/logger/commit/8d1b768e1fd5533319a5694ce884b5d1bf107b46))
+* 移除废弃文件夹 ([5d8a42a](https://github.com/puniyu/logger/commit/5d8a42a63e69f0189f3560efef8ad5deb989c082))
+
+
+### 🔧 其他更新
+
+* **deps:** update rust crate jiff to v0.2.24 ([48f33a7](https://github.com/puniyu/logger/commit/48f33a78a74f9c7ec9cf31b7bf48b560035a0a1f))
+
 ## [0.7.3](https://github.com/puniyu/logger/compare/v0.7.2...v0.7.3) (2026-04-22)
 
 
