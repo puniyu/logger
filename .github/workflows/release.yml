@@ -38,13 +38,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 检出代码
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - name: 设置 rust
-        uses: puniyu/setup-rust@e041f93003a02f197e5b18e0c2e78d225de3d4d5 # main
+        uses: puniyu/setup-rust@ff0ee2ecf7a814df2139cf838c7a67ca2fa0c1d5 # main
         with:
           cache: true
           prefix-key: 'puniyu-logger'
@@ -58,13 +58,13 @@ jobs:
     if: needs.release.outputs.releases_created == 'true'
     steps:
       - name: 检出代码
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - name: 设置 rust
-        uses: puniyu/setup-rust@e041f93003a02f197e5b18e0c2e78d225de3d4d5 # main
+        uses: puniyu/setup-rust@ff0ee2ecf7a814df2139cf838c7a67ca2fa0c1d5 # main
         with:
           cache: true
           prefix-key: 'puniyu-logger'
