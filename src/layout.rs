@@ -76,16 +76,17 @@ impl logforth::Layout for Layout {
         let message = if self.color {
             record.payload().to_string()
         } else {
-            match String::from_utf8(strip_ansi_escapes::strip(record.payload())) {
+            match String::from_utf8(strip_ansi_escapes::strip(record.payload().to_string())) {
                 Ok(cleaned) => cleaned,
                 Err(_) => record.payload().to_string(),
             }
         };
 
-        let prefix_part = prefix
-            .map(|prefix| format!("[{prefix}] "))
-            .unwrap_or_default();
+        let line = match prefix {
+            Some(prefix) => format!("[{prefix}] [{time}] [{level}] {message}"),
+            None => format!("[{time}] [{level}] {message}"),
+        };
 
-        Ok(format!("{prefix_part}[{time}] [{level}] {message}").into_bytes())
+        Ok(line.into_bytes())
     }
 }

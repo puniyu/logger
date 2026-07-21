@@ -1,9 +1,10 @@
-use std::{path::PathBuf, str::FromStr};
+use std::path::PathBuf;
 
-use logforth::record;
+use log::{Level, LevelFilter};
+use logforth::record::{Level as LogforthLevel, LevelFilter as LogforthLevelFilter};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum LogLevel {
+pub(crate) enum LogLevel {
     Trace,
     Debug,
     Info,
@@ -12,58 +13,115 @@ pub enum LogLevel {
     Off,
 }
 
-impl FromStr for LogLevel {
-    type Err = ();
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let level = match s.to_lowercase().as_str() {
-            "trace" => LogLevel::Trace,
-            "debug" => LogLevel::Debug,
-            "info" => LogLevel::Info,
-            "warn" | "warning" => LogLevel::Warn,
-            "error" => LogLevel::Error,
-            "off" => LogLevel::Off,
-            _ => return Err(()),
-        };
-
-        Ok(level)
-    }
-}
-
-impl LogLevel {
-    pub(crate) const fn as_filter(self) -> record::LevelFilter {
-        match self {
-            LogLevel::Trace => record::LevelFilter::MoreSevereEqual(record::Level::Trace),
-            LogLevel::Debug => record::LevelFilter::MoreSevereEqual(record::Level::Debug),
-            LogLevel::Info => record::LevelFilter::MoreSevereEqual(record::Level::Info),
-            LogLevel::Warn => record::LevelFilter::MoreSevereEqual(record::Level::Warn),
-            LogLevel::Error => record::LevelFilter::MoreSevereEqual(record::Level::Error),
-            LogLevel::Off => record::LevelFilter::Off,
+impl From<Level> for LogLevel {
+    fn from(value: Level) -> Self {
+        match value {
+            Level::Error => Self::Error,
+            Level::Warn => Self::Warn,
+            Level::Info => Self::Info,
+            Level::Debug => Self::Debug,
+            Level::Trace => Self::Trace,
         }
     }
 }
 
+impl From<LevelFilter> for LogLevel {
+    fn from(value: LevelFilter) -> Self {
+        match value {
+            LevelFilter::Off => Self::Off,
+            LevelFilter::Error => Self::Error,
+            LevelFilter::Warn => Self::Warn,
+            LevelFilter::Info => Self::Info,
+            LevelFilter::Debug => Self::Debug,
+            LevelFilter::Trace => Self::Trace,
+        }
+    }
+}
+
+impl From<LogLevel> for LevelFilter {
+    fn from(value: LogLevel) -> Self {
+        match value {
+            LogLevel::Off => Self::Off,
+            LogLevel::Error => Self::Error,
+            LogLevel::Warn => Self::Warn,
+            LogLevel::Info => Self::Info,
+            LogLevel::Debug => Self::Debug,
+            LogLevel::Trace => Self::Trace,
+        }
+    }
+}
+
+impl LogLevel {
+    pub const fn to_u8(self) -> u8 {
+        match self {
+            Self::Trace => 0,
+            Self::Debug => 1,
+            Self::Info => 2,
+            Self::Warn => 3,
+            Self::Error => 4,
+            Self::Off => 5,
+        }
+    }
+
+    pub const fn from_u8(value: u8) -> Self {
+        match value {
+            0 => Self::Trace,
+            1 => Self::Debug,
+            2 => Self::Info,
+            3 => Self::Warn,
+            4 => Self::Error,
+            _ => Self::Off,
+        }
+    }
+}
+
+impl From<LogLevel> for LogforthLevel {
+    fn from(value: LogLevel) -> Self {
+        match value {
+            LogLevel::Error => Self::Error,
+            LogLevel::Warn => Self::Warn,
+            LogLevel::Info => Self::Info,
+            LogLevel::Debug => Self::Debug,
+            LogLevel::Trace | LogLevel::Off => Self::Trace,
+        }
+    }
+}
+
+impl From<LogLevel> for LogforthLevelFilter {
+    fn from(value: LogLevel) -> Self {
+        match value {
+            LogLevel::Off => Self::Off,
+            LogLevel::Error => Self::MoreSevereEqual(LogforthLevel::Error),
+            LogLevel::Warn => Self::MoreSevereEqual(LogforthLevel::Warn),
+            LogLevel::Info => Self::MoreSevereEqual(LogforthLevel::Info),
+            LogLevel::Debug => Self::MoreSevereEqual(LogforthLevel::Debug),
+            LogLevel::Trace => Self::MoreSevereEqual(LogforthLevel::Trace),
+        }
+    }
+}
+
+
 pub struct LoggerOptions {
     /// 日志等级
-    pub level: LogLevel,
+    pub level: LevelFilter,
     /// 是否启用文件日志记录
     pub enable_file_logging: bool,
     /// 自定义前缀
     pub prefix: Option<String>,
     /// 日志文件保存路径
-    pub log_directory: Option<PathBuf>,
+    pub log_directory: PathBuf,
     /// 日志文件保留天数
-    pub retention_days: Option<u8>,
+    pub retention_days: u8,
 }
 
 impl Default for LoggerOptions {
     fn default() -> Self {
         Self {
-            level: LogLevel::Info,
+            level: LevelFilter::Info,
             enable_file_logging: false,
             prefix: None,
-            log_directory: Some(PathBuf::from("logs")),
-            retention_days: Some(7),
+            log_directory: PathBuf::from("logs"),
+            retention_days: 7,
         }
     }
 }
@@ -74,7 +132,7 @@ impl LoggerOptions {
     }
 
     /// 设置日志等级
-    pub fn with_level(mut self, level: LogLevel) -> Self {
+    pub fn with_level(mut self, level: LevelFilter) -> Self {
         self.level = level;
         self
     }
@@ -93,13 +151,13 @@ impl LoggerOptions {
 
     /// 设置日志文件保存目录
     pub fn with_log_directory(mut self, directory: impl Into<PathBuf>) -> Self {
-        self.log_directory = Some(directory.into());
+        self.log_directory = directory.into();
         self
     }
 
     /// 设置日志文件保留天数
     pub fn with_retention_days(mut self, days: u8) -> Self {
-        self.retention_days = Some(days);
+        self.retention_days = days;
         self
     }
 }
