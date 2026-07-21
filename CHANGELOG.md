@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/puniyu/logger/compare/v0.8.0...v0.8.1) (2026-07-21)
+
+
+### 🐛 错误修复
+
+* 修正动态更新日志等级 ([13edac3](https://github.com/puniyu/logger/commit/13edac3bf8a498bda17df6155114098d7fbb1de8))
+
 ## [0.8.0](https://github.com/puniyu/logger/compare/v0.7.5...v0.8.0) (2026-07-21)
 
 
