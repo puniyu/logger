@@ -2,35 +2,19 @@ use convert_case::{Case, Casing};
 use logforth::append::{self, Stdout};
 
 use std::num::NonZeroUsize;
-use std::sync::{Once, OnceLock};
+use std::sync::Once;
 
+use crate::filter::LevelFilter;
 use crate::layout::Layout as LoggerLayout;
-use crate::types::{LogLevel, LoggerOptions};
-use crate::filter::AtomicFilter;
+use crate::types::LoggerOptions;
 
 static INIT: Once = Once::new();
-static CURRENT_FILTER: OnceLock<AtomicFilter> = OnceLock::new();
-
-pub(crate) fn current_level() -> log::LevelFilter {
-    match CURRENT_FILTER.get() {
-        Some(filter) => log::LevelFilter::from(filter.current_level()),
-        None => log::LevelFilter::Info,
-    }
-}
-
-pub(crate) fn set_current_level(level: log::LevelFilter) {
-    if let Some(filter) = CURRENT_FILTER.get() {
-        filter.set_level(LogLevel::from(level));
-    }
-    log::set_max_level(level);
-}
 
 pub fn init(options: impl Into<Option<LoggerOptions>>) {
     INIT.call_once(|| {
         let options = options.into().unwrap_or_default();
-        let level = LogLevel::from(options.level);
-        let filter = AtomicFilter::new(level);
-        let _ = CURRENT_FILTER.set(filter.clone());
+        let level = options.level;
+        let filter = LevelFilter::new();
         let prefix = options.prefix.map(|s| s.to_case(Case::Pascal));
 
         let mut builder = logforth::starter_log::builder().dispatch(|d| {
@@ -40,7 +24,10 @@ pub fn init(options: impl Into<Option<LoggerOptions>>) {
 
         if options.enable_file_logging {
             let log_dir = options.log_directory.clone();
-            let file_prefix = prefix.clone().unwrap_or("logger".to_string());
+            let file_prefix = prefix
+                .clone()
+                .unwrap_or("logger".to_string())
+                .to_case(Case::Lower);
             let mut file_builder = append::file::FileBuilder::new(&log_dir, file_prefix)
                 .filename_suffix("log")
                 .layout(LoggerLayout::new(prefix, false))
@@ -57,6 +44,6 @@ pub fn init(options: impl Into<Option<LoggerOptions>>) {
         }
 
         builder.apply();
-        set_current_level(log::LevelFilter::from(level));
+        log::set_max_level(level);
     });
 }

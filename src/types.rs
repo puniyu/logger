@@ -51,30 +51,6 @@ impl From<LogLevel> for LevelFilter {
     }
 }
 
-impl LogLevel {
-    pub const fn to_u8(self) -> u8 {
-        match self {
-            Self::Trace => 0,
-            Self::Debug => 1,
-            Self::Info => 2,
-            Self::Warn => 3,
-            Self::Error => 4,
-            Self::Off => 5,
-        }
-    }
-
-    pub const fn from_u8(value: u8) -> Self {
-        match value {
-            0 => Self::Trace,
-            1 => Self::Debug,
-            2 => Self::Info,
-            3 => Self::Warn,
-            4 => Self::Error,
-            _ => Self::Off,
-        }
-    }
-}
-
 impl From<LogLevel> for LogforthLevel {
     fn from(value: LogLevel) -> Self {
         match value {
@@ -99,7 +75,6 @@ impl From<LogLevel> for LogforthLevelFilter {
         }
     }
 }
-
 
 pub struct LoggerOptions {
     /// 日志等级

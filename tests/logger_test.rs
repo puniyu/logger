@@ -1,6 +1,6 @@
 use log::LevelFilter;
 use owo_colors::OwoColorize;
-use puniyu_logger::{LoggerOptions, get_level, init as log_init, set_level};
+use puniyu_logger::{LoggerOptions, init as log_init};
 use serial_test::serial;
 
 #[test]
@@ -62,28 +62,58 @@ fn explicit_info_level_works() {
 
 #[test]
 #[serial]
-fn runtime_level_can_be_updated() {
+fn set_max_level_updates_runtime_level() {
     log_init(None);
-    let saved = get_level();
-    assert_eq!(saved, LevelFilter::Info);
-    set_level(LevelFilter::Debug);
-    assert_eq!(get_level(), LevelFilter::Debug);
-    log::debug!("{}", "runtime updated");
-    set_level(saved);
-    assert_eq!(get_level(), saved);
+
+    log::set_max_level(LevelFilter::Trace);
+    assert_eq!(log::max_level(), LevelFilter::Trace);
+    assert!(log::log_enabled!(log::Level::Trace));
+    log::trace!("trace via set_max_level");
+
+    log::set_max_level(LevelFilter::Warn);
+    assert_eq!(log::max_level(), LevelFilter::Warn);
+    assert!(!log::log_enabled!(log::Level::Info));
+    assert!(log::log_enabled!(log::Level::Warn));
+
+    log::set_max_level(LevelFilter::Info);
 }
 
 #[test]
 #[serial]
-fn runtime_level_increase_is_effective() {
-    log_init(Some(LoggerOptions::default().with_level(LevelFilter::Info)));
+fn set_max_level_consistent_with_log_enabled() {
+    log_init(None);
 
-    set_level(LevelFilter::Trace);
-    assert_eq!(get_level(), LevelFilter::Trace);
-    assert!(log::log_enabled!(log::Level::Trace));
+    for level in [
+        LevelFilter::Off,
+        LevelFilter::Error,
+        LevelFilter::Warn,
+        LevelFilter::Info,
+        LevelFilter::Debug,
+        LevelFilter::Trace,
+    ] {
+        log::set_max_level(level);
+        assert_eq!(
+            log::max_level(),
+            level,
+            "max_level should match for {level:?}"
+        );
 
-    set_level(LevelFilter::Warn);
-    assert_eq!(get_level(), LevelFilter::Warn);
-    assert!(!log::log_enabled!(log::Level::Info));
-    assert!(log::log_enabled!(log::Level::Warn));
+        let log_level = match level {
+            LevelFilter::Off => None,
+            LevelFilter::Error => Some(log::Level::Error),
+            LevelFilter::Warn => Some(log::Level::Warn),
+            LevelFilter::Info => Some(log::Level::Info),
+            LevelFilter::Debug => Some(log::Level::Debug),
+            LevelFilter::Trace => Some(log::Level::Trace),
+        };
+
+        if let Some(log_level) = log_level {
+            assert!(
+                log::log_enabled!(log_level),
+                "log_enabled!({log_level:?}) should be true when max_level == {level:?}"
+            );
+        }
+    }
+
+    log::set_max_level(LevelFilter::Info);
 }
