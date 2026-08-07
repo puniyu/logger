@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.8.3](https://github.com/puniyu/logger/compare/v0.8.2...v0.8.3) (2026-08-07)
+
+
+### 🔧 其他更新
+
+* **deps:** update puniyu/setup-rust digest to 02e295d ([#152](https://github.com/puniyu/logger/issues/152)) ([f40bfa4](https://github.com/puniyu/logger/commit/f40bfa440ea0d65ba4c1317356be5527df6bd491))
+* **deps:** update puniyu/setup-rust digest to 2cef712 ([#142](https://github.com/puniyu/logger/issues/142)) ([c68843c](https://github.com/puniyu/logger/commit/c68843c1590c061ba57fe03206c0f2e0c0a3a536))
+* **deps:** update puniyu/setup-rust digest to 4a8c162 ([#154](https://github.com/puniyu/logger/issues/154)) ([8a08809](https://github.com/puniyu/logger/commit/8a08809cf5e3f4af63d5aa4ab071bd6ea8d43084))
+* **deps:** update puniyu/setup-rust digest to 5ca3d52 ([#155](https://github.com/puniyu/logger/issues/155)) ([8ce29d1](https://github.com/puniyu/logger/commit/8ce29d1ece6813cf7bc6984798b681d18a0d0f6f))
+* **deps:** update puniyu/setup-rust digest to 614b56e ([#148](https://github.com/puniyu/logger/issues/148)) ([663f1ec](https://github.com/puniyu/logger/commit/663f1ec8c6bf6fd610d28145bfe784e84aa3dc17))
+* **deps:** update puniyu/setup-rust digest to 6ce11d1 ([#151](https://github.com/puniyu/logger/issues/151)) ([b4e8a42](https://github.com/puniyu/logger/commit/b4e8a42b5c8bef451e7b924825824eeb69b84b49))
+* **deps:** update puniyu/setup-rust digest to 75124ba ([#145](https://github.com/puniyu/logger/issues/145)) ([dc5b65e](https://github.com/puniyu/logger/commit/dc5b65e8572f3a3596cb06ccbec1c1d66fab8754))
+* **deps:** update puniyu/setup-rust digest to 78399f4 ([#147](https://github.com/puniyu/logger/issues/147)) ([96ad759](https://github.com/puniyu/logger/commit/96ad7599b8013a93abc21214af1d3724d314cda5))
+* **deps:** update puniyu/setup-rust digest to 7fd700a ([#149](https://github.com/puniyu/logger/issues/149)) ([6fe194d](https://github.com/puniyu/logger/commit/6fe194de85bae02e014ba2d8c076782ae8d7ac39))
+* **deps:** update puniyu/setup-rust digest to 93a3e6d ([#153](https://github.com/puniyu/logger/issues/153)) ([414a9b6](https://github.com/puniyu/logger/commit/414a9b6657022e3cc162d1f9511c28e4d97fbcaa))
+* **deps:** update puniyu/setup-rust digest to c4c04d6 ([#150](https://github.com/puniyu/logger/issues/150)) ([63b25d4](https://github.com/puniyu/logger/commit/63b25d47bc4f4b04c17e7fa15f6255f48fb15591))
+* **deps:** update puniyu/setup-rust digest to e9df2f5 ([#156](https://github.com/puniyu/logger/issues/156)) ([1cde2fc](https://github.com/puniyu/logger/commit/1cde2fc20119e1912eb81bad59a21b78cbc87414))
+* **deps:** update puniyu/setup-rust digest to f5e7448 ([#144](https://github.com/puniyu/logger/issues/144)) ([d8819f8](https://github.com/puniyu/logger/commit/d8819f8691873d7e849803c6273803e39dff6551))
+
 ## [0.8.2](https://github.com/puniyu/logger/compare/v0.8.1...v0.8.2) (2026-07-21)
 
 
