@@ -11,7 +11,7 @@ edition = "2024"
 rust-version = "1.88.0"
 
 [dependencies]
-convert_case = "0.11.0"
+convert_case = "0.12.0"
 jiff = "0.2.34"
 logforth = { version = "0.30.1", features = ["starter-log"] }
 owo-colors = "4.3.0"
