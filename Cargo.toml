@@ -19,7 +19,7 @@ strip-ansi-escapes = "0.2.1"
 log = "0.4.33"
 
 [dev-dependencies]
-serial_test = "3.5.0"
+serial_test = "4.0.0"
 
 
 
