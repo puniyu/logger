@@ -44,7 +44,7 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - name: 设置 rust
-        uses: puniyu/setup-rust@ec66accca4f9b7e800192165ec7812bad9543380 # main
+        uses: puniyu/setup-rust@cc84ec67b7163bae12c1c576edfe690d76fe2679 # main
         with:
           cache: true
           prefix-key: 'puniyu-logger'
@@ -64,7 +64,7 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - name: 设置 rust
-        uses: puniyu/setup-rust@ec66accca4f9b7e800192165ec7812bad9543380 # main
+        uses: puniyu/setup-rust@cc84ec67b7163bae12c1c576edfe690d76fe2679 # main
         with:
           cache: true
           prefix-key: 'puniyu-logger'
